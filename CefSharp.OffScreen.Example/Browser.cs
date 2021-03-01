@@ -18,7 +18,7 @@ namespace CefSharp.OffScreen.Example
         public RequestContext RequestContext { get; private set; }
 
         // chromium does not manage timeouts, so we'll implement one
-        private ManualResetEvent manualResetEvent = new ManualResetEvent(false);
+        private readonly ManualResetEvent manualResetEvent = new ManualResetEvent(false);
 
         public Browser()
         {
@@ -36,7 +36,7 @@ namespace CefSharp.OffScreen.Example
             Cef.Initialize(settings, performDependencyCheck: true, browserProcessHandler: null);
 
             RequestContext = new RequestContext();
-            Page = new ChromiumWebBrowser("", null, RequestContext);
+            Page = new ChromiumWebBrowser(string.Empty, null, RequestContext);
             PageInitialize();
         }
 
@@ -82,9 +82,7 @@ namespace CefSharp.OffScreen.Example
             // Check to see if loading is complete - this event is called twice, one when loading starts
             // second time when it's finished
             if (!e.IsLoading)
-            {
                 manualResetEvent.Set();
-            }
         }
 
         /// <summary>
